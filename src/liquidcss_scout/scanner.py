@@ -13,3 +13,10 @@ JS_CLASSNAME_RE = re.compile(r'\.className\s*=\s*["\']([^"\']+)["\']', re.IGNORE
 JS_QS_RE = re.compile(r'querySelector(?:All)?\(\s*["\']([.#])([^"\']+)["\']', re.IGNORECASE)
 
 
+DYNAMIC_LIQUID_RE = re.compile(r'{{.*?}}', re.DOTALL)
+
+
+DEFAULT_TEXT_EXTS = {".liquid", ".html", ".htm", ".js", ".ts", ".jsx", ".tsx"}
+
+
+
