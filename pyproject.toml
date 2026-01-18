@@ -2,3 +2,23 @@
 requires = ["setuptools>=68", "wheel"]
 build-backend = "setuptools.build_meta"
 
+[project]
+name = "liquidcss-scout"
+version = "0.1.0"
+description = "Find unused CSS selectors in Liquid/HTML/JS projects and safely prune CSS."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "LiquidCSS Scout Contributors" }]
+keywords = ["css", "liquid", "shopify", "unused-css", "theme", "frontend"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent"
+]
+
+[project.scripts]
+liquidcss-scout = "liquidcss_scout.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
