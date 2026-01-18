@@ -58,6 +58,18 @@ def _split_classes(value: str) -> List[str]:
 
 
 
+def scan_project(root: str, *, exts: Set[str] | None = None) -> ScanResult:
+
+    exts = exts or DEFAULT_TEXT_EXTS
+
+    classes: Set[str] = set()
+    ids: Set[str] = set()
+    dyn_classes: Set[str] = set()
+    dyn_ids: Set[str] = set()
+    count = 0
+
+
+
 
 
 
