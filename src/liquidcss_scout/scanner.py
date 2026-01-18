@@ -37,3 +37,28 @@ def _iter_files(root: str, exts: Set[str]) -> Iterable[str]:
                 yield os.path.join(dirpath, fn)
 
 
+
+def _read_text(path: str) -> str:
+
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            return f.read()
+    except UnicodeDecodeError:
+        with open(path, "r", encoding="latin-1") as f:
+            return f.read()
+
+
+def _split_classes(value: str) -> List[str]:
+   
+    value = value.strip()
+    if not value:
+        return []
+    return [c for c in re.split(r"\s+", value) if c]
+
+
+
+
+
+
+
+
