@@ -20,3 +20,20 @@ DEFAULT_TEXT_EXTS = {".liquid", ".html", ".htm", ".js", ".ts", ".jsx", ".tsx"}
 
 
 
+@dataclass(frozen=True)
+class ScanResult:
+    classes: Set[str]
+    ids: Set[str]
+    dynamic_classes: Set[str]
+    dynamic_ids: Set[str]
+    files_scanned: int
+
+
+def _iter_files(root: str, exts: Set[str]) -> Iterable[str]:
+    for dirpath, _, filenames in os.walk(root):
+        for fn in filenames:
+            _, ext = os.path.splitext(fn)
+            if ext.lower() in exts:
+                yield os.path.join(dirpath, fn)
+
+
