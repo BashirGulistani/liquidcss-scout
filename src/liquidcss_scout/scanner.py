@@ -68,7 +68,64 @@ def scan_project(root: str, *, exts: Set[str] | None = None) -> ScanResult:
     dyn_ids: Set[str] = set()
     count = 0
 
+    for path in _iter_files(root, exts):
+        count += 1
+        text = _read_text(path)
 
+        for m in CLASS_RE.finditer(text):
+            raw = m.group(1)
+            if DYNAMIC_LIQUID_RE.search(raw):
+ 
+                for token in _split_classes(DYNAMIC_LIQUID_RE.sub(" ", raw)):
+                    dyn_classes.add(token)
+            else:
+                for token in _split_classes(raw):
+                    classes.add(token)
+
+        for m in ID_RE.finditer(text):
+            raw = m.group(1).strip()
+            if not raw:
+                continue
+            if DYNAMIC_LIQUID_RE.search(raw):
+                cleaned = DYNAMIC_LIQUID_RE.sub(" ", raw).strip()
+                if cleaned:
+                    dyn_ids.add(cleaned)
+            else:
+                ids.add(raw)
+
+
+        for m in JS_CLASS_ADD_RE.finditer(text):
+            value = m.group(1)
+            if value:
+                classes.add(value)
+
+        for m in JS_CLASSNAME_RE.finditer(text):
+            value = m.group(1)
+            for token in _split_classes(value):
+                classes.add(token)
+
+        for m in JS_QS_RE.finditer(text):
+            kind = m.group(1)
+            sel = m.group(2).strip()
+            if not sel:
+                continue
+
+            if kind == ".":
+   
+                for token in re.findall(r"[A-Za-z0-9_-]+", sel):
+                    classes.add(token)
+            elif kind == "#":
+                token = re.match(r"[A-Za-z0-9_-]+", sel)
+                if token:
+                    ids.add(token.group(0))
+
+    return ScanResult(
+        classes=classes,
+        ids=ids,
+        dynamic_classes=dyn_classes,
+        dynamic_ids=dyn_ids,
+        files_scanned=count,
+    )
 
 
 
