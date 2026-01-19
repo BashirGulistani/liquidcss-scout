@@ -9,3 +9,17 @@ from .scanner import ScanResult
 
 
 
+@dataclass(frozen=True)
+class PruneReport:
+    kept_rules: int
+    removed_rules: int
+    maybe_rules: int
+    kept_selectors: List[str]
+    removed_selectors: List[str]
+    maybe_selectors: List[str]
+
+
+
+
+
+
