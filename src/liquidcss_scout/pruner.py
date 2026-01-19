@@ -29,4 +29,35 @@ def _is_used(rule_tokens: Set[str], known_tokens: Set[str]) -> bool:
 
 
 
+def prune_css(css: str, scan: ScanResult, *, mode: str = "safe") -> tuple[str, PruneReport]:
+
+    if mode not in ("safe", "aggressive"):
+        raise ValueError("mode must be 'safe' or 'aggressive'")
+
+    rules = parse_css_rules(css)
+
+    known_classes = set(scan.classes)
+    known_ids = set(scan.ids)
+    dyn_classes = set(scan.dynamic_classes)
+    dyn_ids = set(scan.dynamic_ids)
+
+    kept_chunks: List[str] = []
+    kept_selectors: List[str] = []
+    removed_selectors: List[str] = []
+    maybe_selectors: List[str] = []
+    kept = removed = maybe = 0
+
+    for r in rules:
+        used_class = _is_used(r.class_tokens, known_classes)
+        used_id = _is_used(r.id_tokens, known_ids)
+
+        is_used = (used_class or used_id)
+
+        is_maybe = _is_maybe(r.class_tokens, dyn_classes) or _is_maybe(r.id_tokens, dyn_ids)
+
+
+
+
+
+
 
