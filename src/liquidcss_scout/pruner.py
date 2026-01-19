@@ -58,6 +58,34 @@ def prune_css(css: str, scan: ScanResult, *, mode: str = "safe") -> tuple[str, P
 
 
 
+        decision = "keep"
+        if not is_used:
+            if is_maybe and mode == "safe":
+                decision = "maybe"
+            else:
+                decision = "remove"
 
+        if decision == "keep":
+            kept += 1
+            kept_selectors.append(r.selectors_raw)
+            kept_chunks.append(f"{r.selectors_raw}{{{r.body}}}")
+        elif decision == "maybe":
+            maybe += 1
+            maybe_selectors.append(r.selectors_raw)
+            kept_chunks.append(f"{r.selectors_raw}{{{r.body}}}")
+        else:
+            removed += 1
+            removed_selectors.append(r.selectors_raw)
+
+    pruned_css = "\n".join(kept_chunks).strip() + ("\n" if kept_chunks else "")
+    report = PruneReport(
+        kept_rules=kept,
+        removed_rules=removed,
+        maybe_rules=maybe,
+        kept_selectors=kept_selectors,
+        removed_selectors=removed_selectors,
+        maybe_selectors=maybe_selectors,
+    )
+    return pruned_css, report
 
 
