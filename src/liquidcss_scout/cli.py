@@ -16,5 +16,11 @@ def _read(path: str) -> str:
 
 
 
+def _write(path: str, content: str) -> None:
+    os.makedirs(os.path.dirname(path) or ".", exist_ok=True)
+    with open(path, "w", encoding="utf-8") as f:
+        f.write(content)
+
+
 
 
