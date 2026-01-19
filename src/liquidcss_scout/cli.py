@@ -12,15 +12,16 @@ def _read(path: str) -> str:
         return f.read()
 
 
-
-
-
-
 def _write(path: str, content: str) -> None:
     os.makedirs(os.path.dirname(path) or ".", exist_ok=True)
     with open(path, "w", encoding="utf-8") as f:
         f.write(content)
 
+def main() -> None:
+    p = argparse.ArgumentParser(
+        prog="liquidcss-scout",
+        description="Find unused CSS selectors in Liquid/HTML/JS projects and safely prune CSS.",
+    )
 
 
 
