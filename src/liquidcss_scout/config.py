@@ -26,5 +26,24 @@ class ScoutConfig:
     css_exclude: list[str] = field(default_factory=lambda: ["**/*.min.css", "**/*.min.css.liquid", "**/vendor/**"])
 
 
+    allowlist: Allowlist = field(default_factory=Allowlist)
+    keep_regex: list[str] = field(default_factory=list)
+
+    output_dir: str = ".liquidcss-scout-out"
+    mode: str = "safe"  
+
+    write_pruned_files: bool = True
+    write_patches: bool = True
+    write_html_report: bool = True
+
+
+def _coerce_list(v: Any) -> list[str]:
+    if v is None:
+        return []
+    if isinstance(v, list):
+        return [str(x) for x in v]
+    return [str(v)]
+
+
 
 
