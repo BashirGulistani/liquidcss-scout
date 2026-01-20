@@ -46,4 +46,14 @@ def _coerce_list(v: Any) -> list[str]:
 
 
 
+def load_config(path: str | None) -> ScoutConfig:
+    if not path:
+        return ScoutConfig()
+
+    p = Path(path)
+    if not p.exists():
+        return ScoutConfig()
+
+
+
 
